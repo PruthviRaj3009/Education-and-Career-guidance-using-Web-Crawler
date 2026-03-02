@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:careerguidance/screens/privacyP.dart';
+import 'package:careerguidance/screens/terms_of_service.dart';
 
 class AppInfoScreen extends StatelessWidget {
   const AppInfoScreen({super.key});
@@ -55,7 +56,7 @@ class AppInfoScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 5.0),
                 const Text(
-                  'Contact: brandkart2015@gmail.com',
+                  'Contact: pruthvirajpawr12.pdp@gmail.com',
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
                 ),
               ],
@@ -93,7 +94,7 @@ class AppInfoScreen extends StatelessWidget {
             GestureDetector(
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CopyrightNoticePage()),
+                MaterialPageRoute(builder: (context) => const PrivacyPolicyScreen()),
               ),
               child: const Text(
                 'Privacy Policy',
@@ -107,7 +108,7 @@ class AppInfoScreen extends StatelessWidget {
             GestureDetector(
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CopyrightNoticePage()),
+                MaterialPageRoute(builder: (context) => const TermsOfServiceScreen()),
               ),
               child: const Text(
                 'Terms of Service',

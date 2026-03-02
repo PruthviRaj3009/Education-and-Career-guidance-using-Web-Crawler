@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 
 class TeamScreen extends StatelessWidget {
   const TeamScreen({super.key});
@@ -87,12 +86,16 @@ class TeamScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GradientAppBar(
+      appBar: AppBar(
         title: const Text("About Team"),
-        gradient: const LinearGradient(
-          colors: [Colors.purple, Colors.blue],
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.purple, Colors.blue],
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+            ),
+          ),
         ),
       ),
       body: Padding(

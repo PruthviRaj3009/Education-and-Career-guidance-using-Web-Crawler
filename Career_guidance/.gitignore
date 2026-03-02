@@ -31,11 +31,30 @@ migrate_working_dir/
 .pub/
 /build/
 
-# Local (ignored) app configuration
+# ============================================================
+# API Keys & Secrets (SECURITY CRITICAL)
+# ============================================================
+# Local API key configuration (contains real secrets)
 lib/config/api_keys.dart
-# Optional: common local env files
+
+# Environment files
 .env
 .env.*
+.env.local
+.env.production
+.env.development
+
+# Backup files that might contain secrets
+*.backup
+*_backup.dart
+*.bak
+
+# Firebase service account keys (if any)
+**/service-account*.json
+**/firebase-adminsdk*.json
+
+# Google Services (already tracked, but prevent accidental overrides)
+# android/app/google-services.json  # Uncomment if you want to gitignore this too
 
 # Symbolication related
 app.*.symbols

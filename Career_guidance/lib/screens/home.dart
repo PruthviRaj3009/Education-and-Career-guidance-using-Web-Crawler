@@ -3,6 +3,7 @@ import 'package:careerguidance/screens/aboutus.dart';
 import 'package:careerguidance/screens/privacyP.dart';
 import 'package:careerguidance/screens/rating_page.dart';
 import 'package:careerguidance/screens/support_screen.dart';
+import 'package:careerguidance/screens/admin_page.dart';
 import 'quizscreen.dart';
 import 'team.dart';
 import 'appfeature.dart';
@@ -205,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => CopyrightNoticePage()),
+                      builder: (context) => const PrivacyPolicyScreen()),
                 ),
               ),
               _createDrawerItem(
@@ -216,14 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   MaterialPageRoute(builder: (context) => AboutUsScreen()),
                 ),
               ),
-              _createDrawerItem(
-                icon: Icons.sentiment_satisfied,
-                text: 'Rate Us',
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RateScreen()),
-                ),
-              ),
+
               _createDrawerItem(
                 icon: Icons.feedback,
                 text: 'Feedback',
@@ -311,7 +305,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const AppInfoScreen()),
+                                        const AdminPage()),
                               );
                             },
                             style: ElevatedButton.styleFrom(

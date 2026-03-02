@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gradient_app_bar/flutter_gradient_app_bar.dart';
 import 'package:careerguidance/screens/gptpage.dart';
 
 class AppFeaturesScreen extends StatelessWidget {
@@ -8,12 +7,16 @@ class AppFeaturesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GradientAppBar(
+      appBar: AppBar(
         title: const Text("App Info"),
-        gradient: const LinearGradient(
-          colors: [Colors.purple, Colors.blue],
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.purple, Colors.blue],
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+            ),
+          ),
         ),
       ),
       body: SingleChildScrollView(
