@@ -3,7 +3,7 @@ import 'package:careerguidance/screens/privacyP.dart';
 import 'package:careerguidance/screens/terms_of_service.dart';
 
 /// Admin/App Information Page
-/// 
+///
 /// Central hub for app information, legal documents, and administrative details
 class AdminPage extends StatelessWidget {
   const AdminPage({super.key});
@@ -31,15 +31,15 @@ class AdminPage extends StatelessWidget {
             // App Info Header
             _buildAppInfoHeader(),
             const SizedBox(height: 24),
-            
+
             // Version Info
             _buildVersionCard(),
             const SizedBox(height: 16),
-            
+
             // Legal Documents Section
             _buildSectionTitle('Legal & Privacy'),
             const SizedBox(height: 12),
-            
+
             _buildNavigationCard(
               context: context,
               icon: Icons.privacy_tip,
@@ -53,9 +53,9 @@ class AdminPage extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             _buildNavigationCard(
               context: context,
               icon: Icons.gavel,
@@ -69,31 +69,31 @@ class AdminPage extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // App Information Section
             _buildSectionTitle('Application Details'),
             const SizedBox(height: 12),
-            
+
             _buildInfoCard(),
-            
+
             const SizedBox(height: 24),
-            
+
             // Developer Information
             _buildSectionTitle('Developer Information'),
             const SizedBox(height: 12),
-            
+
             _buildDeveloperCard(),
-            
+
             const SizedBox(height: 24),
-            
+
             // Tech Stack
             _buildSectionTitle('Technology Stack'),
             const SizedBox(height: 12),
-            
+
             _buildTechStackCard(),
-            
+
             const SizedBox(height: 32),
           ],
         ),
@@ -171,7 +171,8 @@ class AdminPage extends StatelessWidget {
                 color: Colors.green.shade50,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(Icons.info_outline, color: Colors.green.shade700, size: 28),
+              child: Icon(Icons.info_outline,
+                  color: Colors.green.shade700, size: 28),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -389,7 +390,7 @@ class AdminPage extends StatelessWidget {
                       Icon(Icons.email, size: 16, color: Colors.blue.shade700),
                       const SizedBox(width: 8),
                       const Text(
-                        'pruthvirajpawr12.pdp@gmail.com',
+                        ' XYZ@gmail.com',
                         style: TextStyle(fontSize: 14),
                       ),
                     ],
@@ -397,10 +398,11 @@ class AdminPage extends StatelessWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      Icon(Icons.location_on, size: 16, color: Colors.blue.shade700),
+                      Icon(Icons.location_on,
+                          size: 16, color: Colors.blue.shade700),
                       const SizedBox(width: 8),
                       const Text(
-                        'Satara, Maharashtra, India',
+                        'Latur, Maharashtra, India',
                         style: TextStyle(fontSize: 14),
                       ),
                     ],

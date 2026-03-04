@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -6,6 +7,8 @@ import 'package:share_plus/share_plus.dart';
 
 import '../services/file_manager_service.dart';
 import '../services/pdf_report_service.dart';
+import '../services/career_recommendation_service.dart';
+import '../models/career_model.dart';
 
 class FinalPage extends StatefulWidget {
   final Map<String, int> scores;
@@ -32,130 +35,24 @@ class _FinalPageState extends State<FinalPage> {
   final FileManagerService _fileManagerService = FileManagerService();
   File? _generatedFile;
   bool _isGenerating = false;
+  late List<CareerRecommendation> _recommendations;
 
-  static const Map<String, List<String>> careerByCategory = {
-    'technology': [
-      'Robotics Engineer',
-      'Software Engineer',
-      'App Developer',
-      'Data Scientist',
-    ],
-    'creative': [
-      'Graphic Designer',
-      'Game Developer',
-      'Content Creator',
-      'UX Designer',
-    ],
-    'business': [
-      'Project Manager',
-      'Business Analyst',
-      'Product Manager',
-      'Entrepreneur',
-    ],
-    'social': [
-      'Social Worker',
-      'Counselor',
-      'Community Manager',
-      'Teacher',
-    ],
-    'leadership': [
-      'Team Lead',
-      'Operations Manager',
-      'HR Manager',
-      'Consultant',
-    ],
-    'research': [
-      'Research Analyst',
-      'Data Scientist',
-      'Lab Scientist',
-      'Policy Analyst',
-    ],
-    'sports': [
-      'Sports Coach',
-      'Fitness Trainer',
-      'Sports Analyst',
-      'Physiotherapist',
-    ],
-  };
+  @override
+  void initState() {
+    super.initState();
+    log('[FinalPage] Initializing with scores: ${widget.scores}');
+    log('[FinalPage] Top category: ${widget.topCategory}');
 
-  static const Map<String, Map<String, dynamic>> careerDetails = {
-    'Robotics Engineer': {
-      'salary':
-          'Average salary of ₹7,28,897 for robotics software engineers and ₹6,50,000 for automation engineers. Typical salary range of £27,500 to £55,000 per year in the UK.',
-      'skills': [
-        'Strong programming skills in languages like Python, C++, Java',
-        'Knowledge of robotics frameworks and libraries like ROS',
-        'Understanding of electronics, mechanics, and control systems',
-        'Proficiency in computer vision, Linux, PLC programming',
-        'Solid math background, especially in algebra, geometry, statistics',
-        'Practical problem-solving abilities and creative thinking',
-        'Effective communication skills to present designs to stakeholders'
-      ],
-      'path': [
-        "Complete a bachelor's degree in robotics engineering, mechatronics, computer science, or a related field",
-        'Gain practical experience through internships or projects while studying',
-        "Consider a master's degree for advanced skills and research opportunities",
-        'Join professional associations like Engineers Australia for networking and continuous learning',
-        'Start as a robotics technician or junior engineer and work your way up'
-      ]
-    },
-    'Game Developer': {
-      'salary':
-          'Average salary of 116,189 per year in the US. Typical salary range of 65,000 to 214,000 in the US. Average salary of ₹6,15,000 per year in India. Salaries vary based on experience level, company size, and location.',
-      'skills': [
-        'Strong programming skills in languages like C#, Java, C++, JavaScript',
-        'Knowledge of game engines like Unity and Unreal',
-        'Proficiency in 2D/3D art, animation, and visual effects',
-        'Understanding of game design principles and user experience',
-        'Problem-solving abilities and creativity to design engaging gameplay'
-      ],
-      'path': [
-        "Complete a bachelor's degree in computer science, game development, or a related field",
-        'Gain practical experience through internships, game jams, and personal projects',
-        'Build a strong portfolio showcasing your programming and game design skills',
-        "Consider a master's degree for advanced skills and research opportunities",
-        'Start as a junior game developer and work your way up to senior and lead roles',
-        'Stay updated with the latest technologies, trends, and best practices in the industry'
-      ]
-    },
-    'Environmental Engineer': {
-      'salary':
-          'Junior environmental engineers earn around ₹2.5 lakhs per year, while senior environmental engineers can earn up to ₹9.6 lakhs annually.',
-      'skills': [
-        'Environmental compliance',
-        'Project management',
-        'Consulting'
-      ],
-      'path': [
-        "Pursue a bachelor's degree in environmental engineering or related field after 10+2 education",
-        'Gain practical experience through internships and projects',
-        'Consider postgraduate studies for specialization',
-        'Develop skills in environmental compliance, project management, and consulting.'
-      ]
-    },
-    'Biomedical Engineer': {
-      'salary':
-          'Entry-level biomedical engineers earn around ₹3.5 lakhs per year, with experienced professionals earning up to ₹20 lakhs annually.',
-      'skills': ['Biomedical devices', 'Problem solving', 'Research mindset'],
-      'path': [
-        'Complete 10+2 education with a focus on PCM or PCB.',
-        'Enroll in a B.Tech, B.E., or B.Sc. program in biomedical engineering',
-        "Pursue higher qualifications like a master's degree or PhD for career advancement",
-        'Continuously improve skills and stay updated with advancements in the field.'
-      ]
-    },
-    'Social Entrepreneur': {
-      'salary':
-          'Earnings can vary widely based on the success of the social enterprise.',
-      'skills': ['Impact strategy', 'Leadership', 'Fundraising'],
-      'path': [
-        'Identify a social issue or cause you are passionate about.',
-        'Develop a business plan for a social enterprise that addresses the identified issue.',
-        'Seek mentorship and guidance from experienced social entrepreneurs.',
-        'Start small, test your ideas, and gradually scale up your social enterprise.'
-      ]
-    },
-  };
+    // Generate intelligent career recommendations
+    _recommendations = CareerRecommendationService.getRecommendations(
+      scores: widget.scores,
+      topCategories: widget.topCategories,
+      topCategory: widget.topCategory,
+      maxRecommendations: 5,
+    );
+
+    log('[FinalPage] Generated ${_recommendations.length} recommendations');
+  }
 
   Map<String, double> get chartData {
     final Map<String, double> data = {};
@@ -167,33 +64,46 @@ class _FinalPageState extends State<FinalPage> {
     return data;
   }
 
-  List<String> get recommendedCareers {
-    final Set<String> results = {};
-    for (final category in widget.topCategories) {
-      results.addAll(careerByCategory[category] ?? []);
-    }
-    return results.toList();
+  int get scorePercentage {
+    return widget.maxScore == 0
+        ? 0
+        : ((widget.totalScore / widget.maxScore) * 100).round();
   }
 
-  List<Map<String, dynamic>> get recommendedDetails {
-    return recommendedCareers
-        .where((career) => careerDetails.containsKey(career))
-        .map((career) => {
-              'title': career,
-              ...careerDetails[career]!,
-            })
-        .toList();
+  String get profileSummary {
+    return CareerRecommendationService.getProfileSummary(
+      scores: widget.scores,
+      topCategory: widget.topCategory,
+      topCategories: widget.topCategories,
+    );
   }
 
   Future<void> _generateAndShareReport() async {
     if (_isGenerating) return;
 
+    log('[FinalPage] Generating PDF report...');
     setState(() {
       _isGenerating = true;
     });
 
     try {
       await _fileManagerService.deleteOldReports();
+
+      // Prepare career data for PDF
+      final recommendedCareers =
+          _recommendations.map((r) => r.career.title).toList();
+      final recommendedDetails = _recommendations
+          .map((r) => {
+                'title': r.career.title,
+                'description': r.career.description,
+                'matchReason': r.matchReason,
+                'matchPercentage': r.matchPercentage,
+                'salary': r.career.salaryRange,
+                'skills': r.career.skills,
+                'path': r.career.educationPath,
+              })
+          .toList();
+
       final bytes = await _pdfReportService.buildReport(
         topCategory: widget.topCategory,
         topCategories: widget.topCategories,
@@ -207,19 +117,28 @@ class _FinalPageState extends State<FinalPage> {
       final file = await _fileManagerService.savePdfBytes(bytes);
       _generatedFile = file;
 
+      log('[FinalPage] PDF generated successfully: ${file.path}');
+
       await Share.shareXFiles(
         [XFile(file.path)],
-        text: 'Career guidance report',
+        text: 'Career Guidance Assessment Report',
       );
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('PDF generated successfully.')),
+        const SnackBar(
+          content: Text('PDF report generated and ready to share!'),
+          backgroundColor: Colors.green,
+        ),
       );
-    } catch (_) {
+    } catch (e) {
+      log('[FinalPage] Failed to generate PDF: $e');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to generate PDF.')),
+        const SnackBar(
+          content: Text('Failed to generate PDF report.'),
+          backgroundColor: Colors.red,
+        ),
       );
     } finally {
       if (mounted) {
@@ -237,18 +156,16 @@ class _FinalPageState extends State<FinalPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final chartColors = [
-      const Color(0xFF2563EB),
-      const Color(0xFF9333EA),
-      const Color(0xFF14B8A6),
+      theme.colorScheme.primary,
+      theme.colorScheme.secondary,
+      theme.colorScheme.tertiary,
       const Color(0xFFF97316),
       const Color(0xFF64748B),
       const Color(0xFF10B981),
+      const Color(0xFFEC4899),
     ];
-
-    final percentage = widget.maxScore == 0
-        ? 0
-        : ((widget.totalScore / widget.maxScore) * 100).round();
 
     return PopScope(
       canPop: true,
@@ -266,174 +183,459 @@ class _FinalPageState extends State<FinalPage> {
                 Navigator.pop(context);
               }
             },
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(Icons.arrow_back),
           ),
-          title: const Text(
-            'Your Career Options',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-          ),
-          backgroundColor: const Color(0xFF1E2A38),
+          title: const Text('Career Assessment Results'),
         ),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Career Options',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Top Category: ${widget.topCategory[0].toUpperCase()}${widget.topCategory.substring(1)}',
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Overall Score: $percentage%',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: SizedBox(
-                    height: 200,
-                    child: ListView.builder(
-                      itemCount: recommendedCareers.length,
-                      itemBuilder: (context, index) {
-                        return Text("- ${recommendedCareers[index]}");
-                      },
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Text(
-                    "* Your top interests are ${widget.topCategories.join(', ')}. Consider careers that align with these strengths.",
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: ElevatedButton.icon(
-                    onPressed: _isGenerating ? null : _generateAndShareReport,
-                    icon: const Icon(Icons.download),
-                    label:
-                        Text(_isGenerating ? 'Generating...' : 'Download PDF'),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                if (chartData.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: PieChart(
-                      dataMap: chartData,
-                      animationDuration: const Duration(milliseconds: 2000),
-                      chartType: ChartType.ring,
-                      chartRadius: 180,
-                      ringStrokeWidth: 30,
-                      centerText: "Career Scores",
-                      colorList: chartColors,
-                      chartValuesOptions: const ChartValuesOptions(
-                        showChartValuesInPercentage: false,
-                        showChartValues: false,
-                      ),
-                      legendOptions: const LegendOptions(
-                        legendPosition: LegendPosition.bottom,
-                        legendShape: BoxShape.rectangle,
-                        showLegends: false,
-                      ),
-                    ),
-                  ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    itemCount: chartData.keys.length,
-                    itemBuilder: (context, index) {
-                      final category = chartData.keys.elementAt(index);
-                      final color = chartColors[index % chartColors.length];
-                      return Row(
-                        children: [
-                          Container(height: 12, width: 12, color: color),
-                          const SizedBox(width: 5),
-                          Text(category),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: recommendedDetails.length,
-                  itemBuilder: (context, index) {
-                    final career = recommendedDetails[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            career['title'],
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "Salary: ${career['salary']}",
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                          const SizedBox(height: 10),
-                          const Text(
-                            "Required Skills:",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: (career['skills'] as List<String>)
-                                  .map((skill) => Text("• $skill"))
-                                  .toList(),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          const Text(
-                            "How to Become:",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: (career['path'] as List<String>)
-                                  .map((step) => Text("• $step"))
-                                  .toList(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Score Summary Header
+              _buildScoreSummaryHeader(theme),
+
+              // Profile Summary
+              _buildProfileSummary(theme),
+
+              // Download Button
+              _buildDownloadSection(theme),
+
+              // Top Career Matches
+              _buildCareerMatches(theme),
+
+              // Score Visualization
+              if (chartData.isNotEmpty) _buildScoreChart(theme, chartColors),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildScoreSummaryHeader(ThemeData theme) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            theme.colorScheme.primaryContainer,
+            theme.colorScheme.secondaryContainer,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            Icons.emoji_events,
+            size: 64,
+            color: theme.colorScheme.onPrimaryContainer,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Assessment Complete!',
+            style: theme.textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.onPrimaryContainer,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Your Career Aptitude Score',
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: theme.colorScheme.onPrimaryContainer.withOpacity(0.8),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surface,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(
+              children: [
+                Text(
+                  '$scorePercentage%',
+                  style: theme.textTheme.displayLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${widget.totalScore} out of ${widget.maxScore} points',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileSummary(ThemeData theme) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.person, color: theme.colorScheme.primary),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Your Profile',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                profileSummary,
+                style: theme.textTheme.bodyLarge,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDownloadSection(ThemeData theme) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: FilledButton.icon(
+        onPressed: _isGenerating ? null : _generateAndShareReport,
+        icon: _isGenerating
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              )
+            : const Icon(Icons.download),
+        label: Text(
+            _isGenerating ? 'Generating Report...' : 'Download PDF Report'),
+        style: FilledButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCareerMatches(ThemeData theme) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Top Career Matches',
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Based on your personality and interests',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: _recommendations.length,
+            itemBuilder: (context, index) {
+              final recommendation = _recommendations[index];
+              return _buildCareerCard(theme, recommendation, index + 1);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCareerCard(
+      ThemeData theme, CareerRecommendation recommendation, int rank) {
+    final career = recommendation.career;
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header with rank and match percentage
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    '#$rank',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    career.title,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: _getMatchColor(recommendation.matchPercentage)
+                        .withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    '${recommendation.matchPercentage}% Match',
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      color: _getMatchColor(recommendation.matchPercentage),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // Description
+            Text(
+              career.description,
+              style: theme.textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 12),
+
+            // Why it matches
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.lightbulb_outline,
+                    size: 20,
+                    color: theme.colorScheme.primary,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Why this matches you',
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          recommendation.matchReason,
+                          style: theme.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            // Salary
+            Row(
+              children: [
+                Icon(
+                  Icons.currency_rupee,
+                  size: 18,
+                  color: theme.colorScheme.secondary,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  'Salary Range: ',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    career.salaryRange,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // Skills Required
+            Text(
+              'Skills Required',
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: career.skills
+                  .take(4)
+                  .map((skill) => Chip(
+                        label: Text(
+                          skill,
+                          style: theme.textTheme.bodySmall,
+                        ),
+                        padding: EdgeInsets.zero,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ))
+                  .toList(),
+            ),
+            if (career.skills.length > 4)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  '+${career.skills.length - 4} more skills',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+            const SizedBox(height: 12),
+
+            // Education Path
+            Text(
+              'Suggested Education Path',
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 8),
+            ...career.educationPath.take(3).map((step) => Padding(
+                  padding: const EdgeInsets.only(bottom: 6),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 6),
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primary,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          step,
+                          style: theme.textTheme.bodySmall,
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+            if (career.educationPath.length > 3)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  '+${career.educationPath.length - 3} more steps',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScoreChart(ThemeData theme, List<Color> chartColors) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Your Score Distribution',
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 16),
+              PieChart(
+                dataMap: chartData,
+                animationDuration: const Duration(milliseconds: 2000),
+                chartType: ChartType.ring,
+                chartRadius: MediaQuery.of(context).size.width / 2.2,
+                ringStrokeWidth: 40,
+                centerText: "Skills",
+                colorList: chartColors,
+                chartValuesOptions: const ChartValuesOptions(
+                  showChartValuesInPercentage: true,
+                  showChartValues: true,
+                  chartValueStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 12,
+                  ),
+                ),
+                legendOptions: const LegendOptions(
+                  showLegends: true,
+                  legendPosition: LegendPosition.bottom,
+                  legendShape: BoxShape.circle,
+                  legendTextStyle: TextStyle(fontSize: 12),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Color _getMatchColor(int percentage) {
+    if (percentage >= 80) {
+      return Colors.green;
+    } else if (percentage >= 60) {
+      return Colors.orange;
+    } else {
+      return Colors.blue;
+    }
   }
 }

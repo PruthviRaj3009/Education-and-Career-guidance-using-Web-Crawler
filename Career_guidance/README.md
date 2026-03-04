@@ -1,220 +1,345 @@
-# Career Guidance App
+# 🎓 Career Guidance App
 
-<<<<<<< HEAD
-# Career Guidance App
+A comprehensive Flutter mobile application powered by Google Gemini AI that helps users discover their ideal career path through personalized assessments, AI-powered chatbot guidance, and detailed career exploration tools.
 
-=======
->>>>>>> e7a77c9 (adding ESP32 live streaming)
-A Flutter-based mobile application designed to help users discover their career interests through interactive quizzes, receive personalized career recommendations, and engage with an AI-powered chatbot for guidance.
+![Flutter](https://img.shields.io/badge/Flutter-3.0+-02569B?style=flat&logo=flutter)
+![Dart](https://img.shields.io/badge/Dart-3.0+-0175C2?style=flat&logo=dart)
+![Firebase](https://img.shields.io/badge/Firebase-Enabled-FFCA28?style=flat&logo=firebase)
+![Gemini AI](https://img.shields.io/badge/Gemini-2.5%20Flash-4285F4?style=flat&logo=google)
 
-## Features
+---
 
-- **Firebase Authentication**: Secure login, signup, and logout functionality
-- **Interactive Quiz**: Career interest assessment with multiple-choice questions
-- **Results Visualization**: Pie chart display of career interests
-- **Career Recommendations**: Detailed career suggestions based on quiz results
-- **ChatGPT Chatbot**: AI-powered conversation for career advice (optional feature)
-- **Dark Mode Support**: Toggle between light and dark themes
-- **PDF Report Download**: Generate and download career assessment reports
+## 📱 About The Project
 
-## Tech Stack
+Career Guidance is a modern, intuitive mobile application designed to help students and professionals make informed career decisions. By combining AI-powered conversations, comprehensive career assessments, and expert guidance, the app provides personalized recommendations tailored to each user's unique strengths, interests, and goals.
 
-- **Flutter**: Cross-platform mobile development framework
-- **Firebase**: Backend services for authentication
-- **Dart**: Programming language
+### ✨ Key Features
 
-### Key Packages Used
+- **🤖 AI-Powered Chatbot**: Get instant career advice through intelligent conversations powered by Google Gemini 2.5 Flash
+- **📝 Career Assessment Quiz**: Take comprehensive quizzes to identify strengths, interests, and career goals
+- **🔍 Career Exploration**: Explore various career paths with detailed information and achievement roadmaps
+- **📊 Personalized Recommendations**: Receive tailored career suggestions based on quiz results and interests
+- **👥 Expert Team Access**: Connect with career guidance professionals
+- **⚙️ Theme Customization**: Light/Dark mode support with system preference sync
+- **🔐 Secure Authentication**: Firebase authentication for user accounts
+- **📱 Modern UI/UX**: Material Design 3 compliant interface with responsive layouts
 
-- `firebase_auth`: Handles user authentication with Firebase
-- `firebase_core`: Core Firebase functionality
-- `chat_gpt_sdk`: Integration with OpenAI's ChatGPT API
-- `dash_chat_2`: Modern chat UI components
-- `pie_chart`: Interactive pie chart visualization
-- `pdf`: PDF document generation
-- `path_provider`: Access to device file system paths
-- `share_plus`: Share files and content
-- `provider`: State management solution
-- `shared_preferences`: Local data persistence
-- `http`: HTTP client for API calls
+---
 
-## Dependencies
+## 🎯 App Screens Overview
 
-The project uses the following main dependencies (automatically installed via `flutter pub get`):
+### 🏠 **Home Screen**
+- Dashboard with quick access to all features
+- Featured career paths
+- Recent quiz results
+- Quick access to AI chatbot
 
-- `firebase_auth: ^6.1.4` - Firebase authentication
-- `firebase_core: ^4.4.0` - Firebase core services
-- `chat_gpt_sdk: ^3.0.7` - ChatGPT API integration
-- `dash_chat_2: ^0.0.20` - Chat interface
-- `pie_chart: ^5.0.0` - Pie chart visualization
-- `pdf: ^3.11.0` - PDF generation
-- `provider: ^6.1.2` - State management
-- `shared_preferences: ^2.2.3` - Local storage
+### 💬 **AI Chatbot (Gemini Integration)**
+- Real-time conversation with Gemini 2.5 Flash AI
+- Context-aware responses
+- Career-specific guidance
+- Message history
+- Typing indicators
 
-## Setup Instructions
+### 📋 **Career Quiz**
+- Interactive assessment questions
+- Multiple categories (interests, skills, personality)
+- Progress tracking
+- Detailed results with visualizations
+- PDF report generation
+
+### 🌟 **Features Screen**
+- Overview of app capabilities
+- Feature descriptions with icons
+- Quick navigation to each feature
+
+### ℹ️ **About & Info**
+- App information and version
+- Developer details
+- Privacy policy and terms
+- Permissions overview
+
+### 👤 **Team**
+- Meet the development team
+- Contact information
+- Professional profiles
+- Social links
+
+### ⚙️ **Settings**
+- Theme selection (Light/Dark/System)
+- Account management
+- Notifications preferences
+- App information
+
+### 📞 **Support**
+- Contact support team
+- FAQs
+- Help documentation
+- Feedback submission
+
+---
+
+## 🛠️ Technologies Used
+
+### **Frontend**
+- **Flutter** 3.0+ - Cross-platform UI framework
+- **Dart** 3.0+ - Programming language
+- **Material Design 3** - Modern UI components
+
+### **Backend & Services**
+- **Firebase Core** - Backend infrastructure
+- **Firebase Auth** - User authentication
+- **Google Generative AI** (Gemini 2.5 Flash) - AI chatbot functionality
+
+### **State Management**
+- **Provider** - State management solution
+- **ChangeNotifier** - Reactive updates
+
+### **UI Components**
+- **Dash Chat 2** - Chat interface
+- **Pie Chart** - Data visualization
+- **Custom Widgets** - Reusable components
+
+### **Utilities**
+- **HTTP** - API requests
+- **Shared Preferences** - Local data storage
+- **Path Provider** - File system access
+- **PDF** - Document generation
+- **Share Plus** - Social sharing
+- **URL Launcher** - External links
+
+---
+
+## 📂 Project Structure
+
+```
+lib/
+├── config/               # Configuration files
+│   └── api_keys.sample.dart
+├── models/              # Data models
+│   └── chat_message_model.dart
+├── providers/           # State management
+│   └── chat_provider.dart
+├── screens/             # UI screens
+│   ├── aboutus.dart
+│   ├── admin_page.dart
+│   ├── appfeature.dart
+│   ├── appinfo.dart
+│   ├── contact_support.dart
+│   ├── faq_screen.dart
+│   ├── finalpage.dart
+│   ├── gptpage.dart     # AI Chatbot
+│   ├── help_documentation.dart
+│   ├── home.dart
+│   ├── login.dart
+│   ├── privacyP.dart
+│   ├── quizscreen.dart
+│   ├── rating_page.dart
+│   ├── settings.dart
+│   ├── signup.dart
+│   ├── submitbutton.dart
+│   ├── support_screen.dart
+│   ├── team.dart
+│   └── terms_of_service.dart
+├── services/            # Business logic
+│   ├── auth_service.dart
+│   ├── chat_service.dart
+│   ├── file_manager_service.dart
+│   ├── pdf_report_service.dart
+│   └── user_repository.dart
+├── theme/               # App theming
+│   ├── app_theme.dart
+│   └── theme_controller.dart
+├── utils/               # Utility functions
+│   └── email_helper.dart
+├── firebase_options.dart
+└── main.dart            # Entry point
+```
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Flutter SDK (version 3.3.4 or higher)
-- Dart SDK (included with Flutter)
-- Android Studio or VS Code with Flutter extensions
-- Firebase account and project
+Before running the app, ensure you have the following installed:
 
-### Installation Steps
+- **Flutter SDK** (3.0 or higher) - [Install Flutter](https://docs.flutter.dev/get-started/install)
+- **Dart SDK** (3.0 or higher) - Included with Flutter
+- **Android Studio** or **VS Code** with Flutter extensions
+- **Xcode** (for iOS development on macOS)
+- **Firebase account** - [Firebase Console](https://console.firebase.google.com/)
+- **Google AI Studio account** - [Get Gemini API Key](https://makersuite.google.com/app/apikey)
+
+### Installation
 
 1. **Clone the repository**
-
    ```bash
-   git clone https://github.com/your-username/career-guidance-app.git
+   git clone https://github.com/yourusername/career-guidance-app.git
    cd career-guidance-app
    ```
 
 2. **Install dependencies**
-
    ```bash
    flutter pub get
    ```
 
-3. **Firebase Setup**
-   - Create a new Firebase project at [Firebase Console](https://console.firebase.google.com/)
-   - Enable Authentication service
-   - For Android: Download `google-services.json` and place it in `android/app/`
-   - For iOS: Configure iOS app and download `GoogleService-Info.plist` to `ios/Runner/`
+3. **Configure API Keys**
+   
+   Create `lib/config/api_keys.dart` from the sample:
+   ```bash
+   cp lib/config/api_keys.sample.dart lib/config/api_keys.dart
+   ```
+   
+   Edit `lib/config/api_keys.dart` and add your Gemini API key:
+   ```dart
+   class ApiKeys {
+     static const String geminiApiKey = 'YOUR_GEMINI_API_KEY_HERE';
+   }
+   ```
+   
+   Get your Gemini API key from: https://makersuite.google.com/app/apikey
 
 4. **Configure Firebase**
-   - Follow Firebase documentation to set up authentication methods (Email/Password)
-   - Update Firebase security rules as needed
+   
+   - Create a Firebase project in the [Firebase Console](https://console.firebase.google.com/)
+   - Add your Android and/or iOS app to the Firebase project
+   - Download and place configuration files:
+     - **Android**: `google-services.json` → `android/app/`
+     - **iOS**: `GoogleService-Info.plist` → `ios/Runner/`
+   - Run FlutterFire configuration:
+     ```bash
+     flutterfire configure
+     ```
 
 5. **Run the app**
    ```bash
+   # For development
    flutter run
+   
+   # For specific device
+   flutter run -d <device_id>
+   
+   # Release build
+   flutter run --release
    ```
 
-### For ChatGPT Integration (Optional)
+---
 
-- Obtain an OpenAI API key
-- Configure the API key in your app's environment variables or secure storage
-- Ensure `chat_gpt_sdk` is properly configured in the code
+## 🤖 AI Chatbot Integration
 
-## Project Structure
+### Gemini 2.5 Flash Model
 
-```
-lib/
-├── main.dart                 # App entry point
-├── screens/                  # UI screens
-│   ├── home.dart            # Home screen
-│   ├── quiz.dart            # Quiz screen
-│   ├── results.dart         # Results with pie chart
-│   ├── recommendations.dart # Career recommendations
-│   ├── chat.dart            # ChatGPT chatbot
-│   └── ...
-├── services/                 # Business logic and API calls
-├── theme/                    # App theming
-└── utils/                    # Utility functions
+The app uses **Google's Gemini 2.5 Flash** model for AI-powered career guidance conversations.
 
-android/                      # Android platform code
-ios/                          # iOS platform code
-assets/                       # Images and static files
+**Configuration:**
+```dart
+GenerativeModel(
+  model: 'gemini-2.5-flash',
+  apiKey: ApiKeys.geminiApiKey,
+  generationConfig: GenerationConfig(
+    temperature: 0.7,
+    topK: 40,
+    topP: 0.95,
+    maxOutputTokens: 2048,
+  ),
+)
 ```
 
-## Screenshots
+**Features:**
+- Context-aware conversations
+- Career-specific knowledge
+- Safety filters enabled
+- Conversation history support (20 messages)
+- Error handling and retry logic
 
-### Home Screen
-<<<<<<< HEAD
-![WhatsApp Image 2026-01-21 at 00 09 38 (2)](https://github.com/user-attachments/assets/1c0a21fd-e1f4-40f7-a7ff-2c3857959515)
+**Logging:**
+The chatbot includes comprehensive logging:
+- `[ChatPage]` - UI interactions
+- `[ChatService]` - Service layer operations
+- `[API]` - API requests/responses
+- `[Error]` - Error tracking
 
+---
 
-### Quiz Interface
+## 📝 Quiz Feature
 
-![WhatsApp Image 2026-01-21 at 00 09 38 (1)](https://github.com/user-attachments/assets/cb479b2b-ac6c-469b-97ef-483916ae7459)
+The career assessment quiz helps users identify their:
+- **Interests** - What they enjoy doing
+- **Skills** - What they're good at
+- **Personality** - Their work style preferences
+- **Goals** - Career aspirations
 
+**Features:**
+- Multiple choice questions
+- Category-based assessment
+- Progress tracking
+- Visual results with charts
+- PDF report export
+- Share results
 
-### Results with Pie Chart
+---
 
+## 🎨 Theme System
 
+The app supports three theme modes:
 
-### Career Recommendations
+1. **Light Mode** - Bright, clean interface
+2. **Dark Mode** - Easy on the eyes
+3. **System** - Follows device theme
 
+**Color Palette:**
+- Primary: Indigo (#6366F1)
+- Secondary: Purple (#8B5CF6)
+- Tertiary: Cyan (#06B6D4)
 
-### ChatGPT Chatbot
+All themes follow Material Design 3 guidelines.
 
-![WhatsApp Image 2026-01-21 at 00 09 37](https://github.com/user-attachments/assets/9618b6d4-d4ab-4662-90d1-12342e13d9ab)
-=======
+---
 
-![Home Screen](screenshots/home.png)
+## 📊 Logging & Debugging
 
-### Quiz Interface
-
-![Quiz Screen](screenshots/quiz.png)
-
-### Results with Pie Chart
-
-![Results Screen](screenshots/results.png)
-
-### Career Recommendations
-
-![Recommendations Screen](screenshots/recommendations.png)
-
-### ChatGPT Chatbot
-
-![Chat Screen](screenshots/chat.png)
->>>>>>> e7a77c9 (adding ESP32 live streaming)
-
-_Note: Add actual screenshots to a `screenshots/` folder in your repository_
-
-## Common Issues and Fixes
-
-### Build Issues
-
-**Minimum SDK Version Error**
+The app includes comprehensive logging for debugging:
 
 ```
-Error: The minimum SDK version is 21, but the current version is 19
+[AppInit] Starting Career Guidance App...
+[AppInit] Flutter bindings initialized
+[AppInit] Initializing Firebase...
+[AppInit] ✅ Firebase initialized successfully
+[ChatPage] User message received: "Hello"
+[ChatService] Sending message to Gemini API...
+[ChatService] ✅ Response received from Gemini API
+[Navigation] Navigating to QuizScreen
+[Quiz] User selected answer index: 2
+[Error] Network error: No internet connection
 ```
 
-- Update `android/app/build.gradle`:
-  ```gradle
-  defaultConfig {
-      minSdkVersion 21
-  }
-  ```
+**Log Prefixes:**
+- `[AppInit]` - Application initialization
+- `[Auth]` - Authentication events
+- `[Navigation]` - Screen navigation
+- `[ChatPage]` - Chat UI events
+- `[ChatService]` - Chat service operations
+- `[API]` - API calls
+- `[Quiz]` - Quiz interactions
+- `[Settings]` - Settings changes
+- `[Error]` - Error messages
 
-**Kotlin Version Compatibility**
+---
 
-- Update `android/build.gradle`:
-  ```gradle
-  ext.kotlin_version = '1.9.0'
-  ```
+## 🔐 Security & Privacy
 
-**Gradle Clean**
+- **API Keys**: Never committed to repository (in `.gitignore`)
+- **Firebase Auth**: Secure user authentication
+- **Data Privacy**: User data stored securely in Firebase
+- **HTTPS**: All API communications encrypted
+- **Safety Filters**: AI responses filtered for inappropriate content
 
-```bash
-cd android
-./gradlew clean
-cd ..
-flutter clean
-flutter pub get
-```
+---
 
-### Firebase Issues
+## 🤝 Contributing
 
-**google-services.json not found**
-
-- Ensure the file is placed in `android/app/` directory
-- Check Firebase project configuration matches your app
-
-**Authentication not working**
-
-- Verify Firebase Authentication is enabled in console
-- Check API keys and configuration
-
-### ChatGPT Integration Issues
-
-**API Key Error**
-
-- Ensure OpenAI API key is properly configured
-- Check API rate limits and billing
-
-## Contributing
+We welcome contributions! Please follow these steps:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
@@ -222,25 +347,52 @@ flutter pub get
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-### Development Guidelines
+---
 
-- Follow Flutter best practices
-- Write clear, concise commit messages
-<<<<<<< HEAD
-- Test on  Android device
-=======
-- Test on both Android and iOS devices
->>>>>>> e7a77c9 (adding ESP32 live streaming)
-- Update documentation for new features
+## 👨‍💻 Development Team
 
-## License
+**INNOVATE SPHERE VENTURE BY BRANDKART**
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- **Tanishka Pramod Rakte** - Backend Development, ML Algorithms
+- **Prathamesh Dnyaneshwar Pawar** - Full-stack Development
+- **Kunal Vitthal Shinde** - Database & Web Technologies
+
+**Contact:** pruthvirajpawr12.pdp@gmail.com
 
 ---
 
-**Note**: This app is for educational and guidance purposes only. Always consult with career counselors or professionals for personalized advice.
-<<<<<<< HEAD
+## 📄 License
 
-=======
->>>>>>> e7a77c9 (adding ESP32 live streaming)
+This project is developed by INNOVATE SPHERE VENTURE. All rights reserved.
+
+---
+
+## 📞 Support
+
+For support, email us at:
+- **Email**: pruthvirajpawr12.pdp@gmail.com
+- **Package**: com.innovatesphere.careerguidance
+
+---
+
+## 🙏 Acknowledgments
+
+- [Flutter Team](https://flutter.dev) for the amazing framework
+- [Google AI](https://ai.google.dev) for Gemini AI technology
+- [Firebase](https://firebase.google.com) for backend infrastructure
+- Material Design 3 for design guidelines
+
+---
+
+## 📚 Useful Resources
+
+- [Flutter Documentation](https://docs.flutter.dev/)
+- [Gemini API Documentation](https://ai.google.dev/docs)
+- [Firebase Documentation](https://firebase.google.com/docs)
+- [Material Design 3](https://m3.material.io/)
+
+---
+
+**Made with ❤️ by the INNOVATE SPHERE Team**
+
+*Last Updated: March 2026*

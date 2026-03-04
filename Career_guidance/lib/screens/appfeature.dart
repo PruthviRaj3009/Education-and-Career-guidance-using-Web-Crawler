@@ -6,76 +6,109 @@ class AppFeaturesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return Scaffold(
       appBar: AppBar(
-        title: const Text("App Info"),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.purple, Colors.blue],
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-            ),
-          ),
-        ),
+        title: const Text("Features"),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Key Features',
-              style: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20.0),
-            FeatureTile(
-              number: '1',
-              title: 'Career Assessment Quiz',
-              description:
-                  'Users can take a comprehensive quiz to identify their strengths, interests, and goals.',
-            ),
-            FeatureTile(
-              number: '2',
-              title: 'Career Exploration',
-              description:
-                  'Explore various career paths and gain information of that career patha and how to achive it.',
-            ),
-            FeatureTile(
-              number: '3',
-              title: 'Integrated Chatbot',
-              description:
-                  'A chatbot that makes your career guidance business easy to manage. Ditch the age-old forms and calls and switch to a rather innovative way of helping candidates.',
-            ),
-            FeatureTile(
-              number: '4',
-              title: 'Personalized Recommendations',
-              description:
-                  'Receive personalized recommendations based on quiz results and interests.',
-            ),
-            Center(
-              child: Container(
-                width: 200,
-                child: Positioned(
-                  bottom: 20,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ChatPage()));
-                    },
-                    child: const Text(
-                      "Career Discussion",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                      ),
+            // Header
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    theme.colorScheme.primaryContainer,
+                    theme.colorScheme.tertiaryContainer,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.rocket_launch_rounded,
+                    size: 48,
+                    color: theme.colorScheme.onPrimaryContainer,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Key Features',
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onPrimaryContainer,
                     ),
                   ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Discover what makes our app special',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onPrimaryContainer.withOpacity(0.8),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            
+            // Features
+            FeatureTile(
+              icon: Icons.quiz_outlined,
+              iconColor: theme.colorScheme.primary,
+              title: 'Career Assessment Quiz',
+              description:
+                  'Take a comprehensive quiz to identify your strengths, interests, and career goals with personalized insights.',
+            ),
+            FeatureTile(
+              icon: Icons.explore_outlined,
+              iconColor: theme.colorScheme.secondary,
+              title: 'Career Exploration',
+              description:
+                  'Explore various career paths and gain detailed information on how to achieve your dream career.',
+            ),
+            FeatureTile(
+              icon: Icons.chat_bubble_outline,
+              iconColor: theme.colorScheme.tertiary,
+              title: 'AI-Powered Chatbot',
+              description:
+                  'Get instant career guidance through our intelligent chatbot. Ask questions anytime and receive personalized advice.',
+            ),
+            FeatureTile(
+              icon: Icons.recommend_outlined,
+              iconColor: Colors.orange,
+              title: 'Personalized Recommendations',
+              description:
+                  'Receive tailored career recommendations based on your quiz results, interests, and aspirations.',
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // CTA Button
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ChatPage()),
+                  );
+                },
+                icon: const Icon(Icons.chat),
+                label: const Text('Start Career Discussion'),
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
             ),
+            const SizedBox(height: 16),
           ],
         ),
       ),
@@ -84,12 +117,14 @@ class AppFeaturesScreen extends StatelessWidget {
 }
 
 class FeatureTile extends StatelessWidget {
-  final String number;
+  final IconData icon;
+  final Color iconColor;
   final String title;
   final String description;
 
   const FeatureTile({
-    required this.number,
+    required this.icon,
+    required this.iconColor,
     required this.title,
     required this.description,
     super.key,
@@ -97,43 +132,50 @@ class FeatureTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20.0),
-      padding: const EdgeInsets.all(15.0),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 198, 87, 218),
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 20.0,
-            backgroundColor: const Color.fromARGB(255, 52, 149, 227),
-            child: Text(
-              number,
-              style: const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.bold),
+    final theme = Theme.of(context);
+    
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: iconColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                icon,
+                color: iconColor,
+                size: 28,
+              ),
             ),
-          ),
-          const SizedBox(width: 15.0),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                      fontSize: 18.0, fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: 5.0),
-                Text(
-                  description,
-                  style: const TextStyle(fontSize: 16.0, height: 1.5),
-                ),
-              ],
+            const SizedBox(width: 16.0),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 6.0),
+                  Text(
+                    description,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
