@@ -18,7 +18,7 @@ class _LoginState extends State<Login> {
       TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-
+  bool _isPasswordVisible = false;
   @override
   void dispose() {
     emailTextEditingController.dispose();
@@ -177,8 +177,9 @@ class _LoginState extends State<Login> {
                               ),
                               TextFormField(
                                 controller: passwordTextEditingController,
-                                obscureText: true,
+                                //obscureText: true,
                                 obscuringCharacter: "*",
+                                obscureText: !_isPasswordVisible,
                                 decoration: InputDecoration(
                                   label: const Text(
                                     "Enter password",
@@ -190,9 +191,23 @@ class _LoginState extends State<Login> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  suffixIcon: const Icon(
-                                    Icons.visibility_off,
-                                    color: Colors.grey,
+                                  // suffixIcon: const Icon(
+                                  //   Icons.visibility_off,
+                                  //   color: Colors.grey,
+                                  // ),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _isPasswordVisible
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                      color: Colors.grey,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isPasswordVisible =
+                                            !_isPasswordVisible;
+                                      });
+                                    },
                                   ),
                                 ),
                                 validator: (value) {

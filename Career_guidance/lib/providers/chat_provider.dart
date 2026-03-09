@@ -3,7 +3,7 @@ import 'package:careerguidance/models/chat_message_model.dart';
 import 'package:careerguidance/services/chat_service.dart';
 
 /// Provider for managing chat state
-/// 
+///
 /// Handles:
 /// - Message list state
 /// - Loading states
@@ -11,13 +11,13 @@ import 'package:careerguidance/services/chat_service.dart';
 /// - API communication via ChatService
 class ChatProvider extends ChangeNotifier {
   final ChatService _chatService;
-  
+
   List<ChatMessageModel> _messages = [];
   bool _isLoading = false;
   String? _error;
   bool _isSending = false;
 
-  ChatProvider({ChatService? chatService}) 
+  ChatProvider({ChatService? chatService})
       : _chatService = chatService ?? ChatService();
 
   // Getters
@@ -34,7 +34,7 @@ class ChatProvider extends ChangeNotifier {
 
     _isSending = true;
     _error = null;
-    
+
     // Create user message
     final userMessage = ChatMessageModel(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -70,7 +70,8 @@ class ChatProvider extends ChangeNotifier {
       // Call API
       final response = await _chatService.sendMessage(
         userMessage: text.trim(),
-        conversationHistory: history.sublist(0, history.length - 1), // Exclude current message
+        conversationHistory:
+            history.sublist(0, history.length - 1), // Exclude current message
       );
 
       // Update bot message with response
@@ -81,11 +82,11 @@ class ChatProvider extends ChangeNotifier {
           status: MessageStatus.sent,
         );
       }
-      
+
       _error = null;
     } on ChatException catch (e) {
       _error = e.message;
-      
+
       // Update bot message with error
       final index = _messages.indexWhere((msg) => msg.id == botMessageId);
       if (index != -1) {
@@ -96,7 +97,7 @@ class ChatProvider extends ChangeNotifier {
       }
     } catch (e) {
       _error = 'Unexpected error: ${e.toString()}';
-      
+
       // Update bot message with error
       final index = _messages.indexWhere((msg) => msg.id == botMessageId);
       if (index != -1) {

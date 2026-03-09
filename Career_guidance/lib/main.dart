@@ -7,15 +7,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'firebase_options.dart';
 
 void main() async {
   log('[AppInit] Starting Career Guidance App...');
-  
+
   WidgetsFlutterBinding.ensureInitialized();
   log('[AppInit] Flutter bindings initialized');
-  
+
   log('[AppInit] Initializing Firebase...');
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -37,7 +36,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log('[AppInit] Building MyApp widget');
-    
+
     return ChangeNotifierProvider(
       create: (_) {
         log('[AppInit] Creating ThemeController with mode: $themeMode');
@@ -46,7 +45,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeController>(
         builder: (context, controller, _) {
           log('[AppInit] Building MaterialApp');
-          
+
           return MaterialApp(
             title: 'Career Guidance',
             debugShowCheckedModeBanner: false,
@@ -67,7 +66,7 @@ class AuthGate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log('[Navigation] Building AuthGate');
-    
+
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
