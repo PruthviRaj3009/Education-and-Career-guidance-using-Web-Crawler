@@ -31,14 +31,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
   assets:
-    - assets/profile.jpg
-    - assets/home.jpg
-    - assets/features.jpg
-    - assets/info.jpg
-    - assets/profile.jpg
-    - assets/quiz.jpg
-    - assets/career.avif
-    - assets/tanishka.jpg
-    - assets/20240504_140051.jpg
-    - assets/kunal.jpg
+    - assets/

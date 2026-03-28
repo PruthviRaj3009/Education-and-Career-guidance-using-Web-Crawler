@@ -30,13 +30,14 @@ class _ChatPageState extends State<ChatPage> {
 
   // Stable Gemini model for production
   static const String _modelName = 'gemini-2.5-flash';
-  
+
   @override
   void initState() {
     super.initState();
     log('[ChatPage] Initializing Gemini model...', name: 'ChatPage');
-    log('[ChatPage] API Key: ${ApiKeys.geminiApiKey.substring(0, 10)}...', name: 'ChatPage');
-    
+    log('[ChatPage] API Key: ${ApiKeys.geminiApiKey.substring(0, 10)}...',
+        name: 'ChatPage');
+
     _geminiModel = GenerativeModel(
       model: _modelName,
       apiKey: ApiKeys.geminiApiKey,
@@ -53,8 +54,9 @@ class _ChatPageState extends State<ChatPage> {
         SafetySetting(HarmCategory.dangerousContent, HarmBlockThreshold.medium),
       ],
     );
-    
-    log('[ChatPage] ✅ Gemini model initialized successfully: $_modelName', name: 'ChatPage');
+
+    log('[ChatPage] ✅ Gemini model initialized successfully: $_modelName',
+        name: 'ChatPage');
   }
 
   @override
@@ -130,51 +132,56 @@ class _ChatPageState extends State<ChatPage> {
 
   Future<void> getChatResponse(ChatMessage m) async {
     log('[ChatPage] User message received: "${m.text}"', name: 'ChatPage');
-    
+
     setState(() {
       _messages.insert(0, m);
       _typingUsers.add(_geminiChatUser);
     });
 
     log('[ChatPage] Using model: $_modelName', name: 'ChatPage');
-    
+
     try {
       log('[ChatPage] Sending message to Gemini API...', name: 'ChatPage');
-      
+
       // Convert conversation history to Gemini format
       final history = _messages.reversed.toList().map((msg) {
         final role = msg.user == _user ? 'user' : 'model';
         return Content(role, [TextPart(msg.text)]);
       }).toList();
-      
-      log('[ChatPage] Conversation history length: ${history.length}', name: 'ChatPage');
+
+      log('[ChatPage] Conversation history length: ${history.length}',
+          name: 'ChatPage');
 
       // Remove the last message (current user message) from history
       final chatHistory = history.sublist(0, history.length - 1);
-      log('[ChatPage] Chat history for context: ${chatHistory.length} messages', name: 'ChatPage');
+      log('[ChatPage] Chat history for context: ${chatHistory.length} messages',
+          name: 'ChatPage');
 
       // Create chat session with history
-      log('[ChatPage] Creating chat session with model: $_modelName', name: 'ChatPage');
+      log('[ChatPage] Creating chat session with model: $_modelName',
+          name: 'ChatPage');
       final chat = _geminiModel.startChat(history: chatHistory);
 
       // Send the current message
       final response = await chat.sendMessage(
         Content.text(m.text),
       );
-      
+
       log('[ChatPage] ✅ Response received from Gemini API', name: 'ChatPage');
 
       final text = response.text;
-      log('[ChatPage] Response text length: ${text?.length ?? 0}', name: 'ChatPage');
-      
+      log('[ChatPage] Response text length: ${text?.length ?? 0}',
+          name: 'ChatPage');
+
       if (text == null || text.isEmpty) {
-        log('[ChatPage] ⚠️ Empty response received from Gemini', name: 'ChatPage');
+        log('[ChatPage] ⚠️ Empty response received from Gemini',
+            name: 'ChatPage');
         _showError("Sorry, I couldn't generate a response. Please try again.");
         return;
       }
 
       log('[ChatPage] ✅ Successfully generated response', name: 'ChatPage');
-      
+
       if (!mounted) return;
       setState(() {
         _messages.insert(
@@ -187,15 +194,15 @@ class _ChatPageState extends State<ChatPage> {
         );
         _typingUsers.remove(_geminiChatUser);
       });
-      
     } on GenerativeAIException catch (e, stackTrace) {
       // Handle Gemini-specific errors (ServerException is a subtype of this)
-      log('[ChatPage] ❌ GenerativeAIException during message send', name: 'ChatPage', error: e, stackTrace: stackTrace);
+      log('[ChatPage] ❌ GenerativeAIException during message send',
+          name: 'ChatPage', error: e, stackTrace: stackTrace);
       log('[Error] Gemini API error: ${e.message}', name: 'ChatPage');
-      
+
       // Check for 404 NOT_FOUND specifically
-      if (e.message.contains('404') || 
-          e.message.contains('NOT_FOUND') || 
+      if (e.message.contains('404') ||
+          e.message.contains('NOT_FOUND') ||
           e.message.contains('not found')) {
         log('[Error] 🚨 Model not found: $_modelName', name: 'ChatPage');
         _showError('AI model not found. Please check the model configuration.');
@@ -207,21 +214,23 @@ class _ChatPageState extends State<ChatPage> {
         _showError('Rate limit exceeded. Please try again in a few moments.');
       } else if (e.message.contains('SAFETY')) {
         log('[Error] Safety filter triggered', name: 'ChatPage');
-        _showError('Your message was blocked by safety filters. Please rephrase and try again.');
+        _showError(
+            'Your message was blocked by safety filters. Please rephrase and try again.');
       } else {
         log('[Error] Unknown Gemini error: ${e.message}', name: 'ChatPage');
         _showError('AI service error: ${e.message}');
       }
-      
     } catch (e, stackTrace) {
-      log('[ChatPage] ❌ Unexpected error in getChatResponse', name: 'ChatPage', error: e, stackTrace: stackTrace);
+      log('[ChatPage] ❌ Unexpected error in getChatResponse',
+          name: 'ChatPage', error: e, stackTrace: stackTrace);
       log('[Error] Error type: ${e.runtimeType}', name: 'ChatPage');
-      
+
       if (e.toString().contains('timeout')) {
         log('[Error] Request timeout', name: 'ChatPage');
-        _showError('Request timeout. Please check your connection and try again.');
-      } else if (e.toString().contains('SocketException') || 
-                 e.toString().contains('NetworkException')) {
+        _showError(
+            'Request timeout. Please check your connection and try again.');
+      } else if (e.toString().contains('SocketException') ||
+          e.toString().contains('NetworkException')) {
         log('[Error] Network error', name: 'ChatPage');
         _showError('No internet connection. Please check your network.');
       } else {
@@ -234,9 +243,9 @@ class _ChatPageState extends State<ChatPage> {
   /// Helper method to show error in chat and as SnackBar
   void _showError(String errorMessage) {
     log('[ChatPage] Showing error to user: $errorMessage', name: 'ChatPage');
-    
+
     if (!mounted) return;
-    
+
     // Show error message in chat
     setState(() {
       _messages.insert(
@@ -249,7 +258,7 @@ class _ChatPageState extends State<ChatPage> {
       );
       _typingUsers.remove(_geminiChatUser);
     });
-    
+
     // Show snackbar for better visibility
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

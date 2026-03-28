@@ -15,7 +15,7 @@ class TeamScreen extends StatelessWidget {
     List<String> information,
   ) {
     final theme = Theme.of(context);
-    
+
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -72,7 +72,7 @@ class TeamScreen extends StatelessWidget {
               ],
             ),
           ),
-          
+
           // Contact Actions
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -100,9 +100,9 @@ class TeamScreen extends StatelessWidget {
               ],
             ),
           ),
-          
+
           const Divider(height: 1),
-          
+
           // Information Section
           Padding(
             padding: const EdgeInsets.all(16),
@@ -116,12 +116,14 @@ class TeamScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                _buildInfoRow(context, Icons.cake_outlined, 'Date of Birth', dob),
+                _buildInfoRow(
+                    context, Icons.cake_outlined, 'Date of Birth', dob),
                 _buildInfoRow(context, Icons.person_outline, 'Gender', gender),
-                _buildInfoRow(context, Icons.location_on_outlined, 'Address', address),
+                _buildInfoRow(
+                    context, Icons.location_on_outlined, 'Address', address),
                 _buildInfoRow(context, Icons.email_outlined, 'Email', email),
-                _buildInfoRow(context, Icons.phone_outlined, 'Contact', contact),
-                
+                _buildInfoRow(
+                    context, Icons.person_outline, 'Enrollment No.', contact),
                 const SizedBox(height: 16),
                 Text(
                   'Working On',
@@ -131,29 +133,29 @@ class TeamScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 ...information.map((info) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 6),
-                        width: 6,
-                        height: 6,
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.primary,
-                          shape: BoxShape.circle,
-                        ),
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 6),
+                            width: 6,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.primary,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              info,
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          info,
-                          style: theme.textTheme.bodyMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                )),
+                    )),
               ],
             ),
           ),
@@ -169,7 +171,7 @@ class TeamScreen extends StatelessWidget {
     required Color color,
   }) {
     final theme = Theme.of(context);
-    
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -192,9 +194,10 @@ class TeamScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(BuildContext context, IconData icon, String label, String value) {
+  Widget _buildInfoRow(
+      BuildContext context, IconData icon, String label, String value) {
     final theme = Theme.of(context);
-    
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -239,7 +242,7 @@ class TeamScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Our Team"),
@@ -280,7 +283,8 @@ class TeamScreen extends StatelessWidget {
                 Text(
                   'Passionate developers building the future',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onPrimaryContainer.withOpacity(0.8),
+                    color:
+                        theme.colorScheme.onPrimaryContainer.withOpacity(0.8),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -288,17 +292,17 @@ class TeamScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          
+
           // Team Members
           _buildTeamMemberCard(
             context,
-            "assets/tanishka.jpg",
-            "Tanishka Pramod Rakte",
-            "21/04/2002",
-            "Female",
-            "Balaji Nagar, Pune",
-            "tanishkarakte@gmail.com",
-            "84460 52977",
+            "assets/adhiraj.jpg",
+            "Jadhav Adhiraj Krishnapal",
+            "24/05/2007",
+            "Male",
+            "Latur",
+            "adhirajjadhav2457@gmail.com ",
+            "23511990117",
             [
               "Backend development with Supervisor learning Algorithms",
               "Web crawler and web scraper technology"
@@ -306,13 +310,13 @@ class TeamScreen extends StatelessWidget {
           ),
           _buildTeamMemberCard(
             context,
-            "assets/20240504_140051.jpg",
-            "Prathamesh Dnyaneshwar Pawar",
-            "17/02/2002",
+            "assets/hariom.jpg",
+            "Ghute Hariom Vishnu",
+            "04/03/2007",
             "Male",
-            "Khandala, Satara",
-            "prathamesh.research1702@gmail.com",
-            "86983 80351",
+            "Latur",
+            "hariomghute@gmail.com",
+            "23511990106",
             [
               "Frontend development in Flutter",
               "Backend development and application architecture",
@@ -320,13 +324,27 @@ class TeamScreen extends StatelessWidget {
           ),
           _buildTeamMemberCard(
             context,
-            "assets/kunal.jpg",
-            "Kunal Vitthal Shinde",
+            "assets/soham.jpg",
+            "Joshi Soham Prashant",
             "14/04/2002",
             "Male",
-            "Satara, Satara",
-            "thekunalshinde@gmail.com",
-            "76203 97194",
+            "latur",
+            "joshisoham68@gmail.com",
+            "23511990154",
+            [
+              "Database algorithm training",
+              "Web crawler and web scraper technology",
+            ],
+          ),
+          _buildTeamMemberCard(
+            context,
+            "assets/sohel.jpg",
+            "Tamboli Sohel Yusuf",
+            "05/04/2006",
+            "Male",
+            "latur",
+            "soheltamboli1221@gmail.com",
+            "23511990122",
             [
               "Database algorithm training",
               "Web crawler and web scraper technology",
